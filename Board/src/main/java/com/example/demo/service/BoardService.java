@@ -32,8 +32,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final FileRepository fileRepository;
-
-    private final String filePath = "C:/Users/G/Desktop/demo/boardFile/";
+    private final String filePath = "C:/Users/김가영/Desktop/portfolio_board/Board/boardFile/";
 
     // 가져온 데이터 DB에 저장
     @Transactional
@@ -174,9 +173,9 @@ public class BoardService {
         BoardFile boardFile = getFileByBoardId(boardId);
 
         // 실제 파일 시스템에서의 파일 경로
-        String filePath = "C:/Users/G/Desktop/demo/boardFile/" + boardFile.getUuid()+ boardFile.getFileName();
+        String deleteFilePath = filePath + boardFile.getUuid()+ boardFile.getFileName();
 
-        File file = new File(filePath);
+        File file = new File(deleteFilePath);
 
         if(file.exists()){
             if(file.delete()){
