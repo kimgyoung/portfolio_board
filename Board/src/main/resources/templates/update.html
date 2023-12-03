@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Board</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 20px;
+            padding: 20px;
+        }
+
+        form {
+            width: 50%;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            margin-top: 10px;
+            padding: 12px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<form action="/board/update" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" th:value="${board.id}">
+    <label for="title">Title:</label>
+    <input type="text" name="title" id="title" th:value="${board.title}">
+    <br>
+    <label for="username">Writer:</label>
+    <input type="text" name="username" id="username" th:value="${board.username}">
+    <br>
+    <label for="contents">Contents:</label>
+    <textarea name="contents" id="contents" cols="30" rows="10" th:text="${board.contents}"></textarea>
+    <br>
+    <!-- Old Files Information -->
+    <label oldFiles>Old Files:</label>
+    <div th:each="file : ${board.boardFiles}">
+        <p th:text="${file.fileName}"></p>
+    </div>
+    <br>
+    <!-- New Files Input -->
+    <label for="newFiles">New Files:</label>
+    <input type="file" id="newFiles" name="newFiles" multiple>
+    <br>
+    <!-- New Files Preview -->
+    <div id="preview"></div>
+    <br>
+    <input type="submit" value="글수정">
+</form>
+
+<!-- JavaScript to preview new files -->
+<script>
+    document.getElementById('newFiles').addEventListener('change', function(e) {
+        var preview = document.getElementById('preview');
+        preview.innerHTML = '';
+        Array.from(e.target.files).forEach(function(file) {
+            var img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.style.width = '200px';
+            img.onload = function() {
+                URL.revokeObjectURL(this.src);
+            }
+            preview.appendChild(img);
+        });
+    });
+</script>
+
+</body>
+</html>
+

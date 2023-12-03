@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 50MB
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/green?serverTImezone=Asia/Seoul&charactorEncoding=UTF-8
+    username: root
+    password: 1234
+
+  thymeleaf:
+    cache: false
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+
+  h2:
+    console:
+      enabled: true
+
+  output:
+    ansi:
+      enabled: ALWAYS

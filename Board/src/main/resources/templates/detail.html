@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>detail</title>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5; /* 연한 회색 배경 */
+            margin: 20px;
+            padding: 20px;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff; /* 흰색 배경 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+            border-radius: 8px; /* 테이블 테두리 둥글게 */
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #3498db; /* 파란색 배경 */
+            color: white;
+        }
+
+        td {
+            text-align: left;
+        }
+
+        button {
+            margin: 10px;
+            padding: 12px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #27ae60; /* 초록색 배경 */
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        #comment-write {
+            margin-top: 20px;
+            background-color: #ecf0f1; /* 연한 회색 배경 */
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        #comment-write input {
+            margin-right: 10px;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        #comment-list table {
+            width: 100%;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        #comment-list th, #comment-list td {
+            text-align: center;
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        #comment-list th {
+            background-color: #3498db;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <tr>
+        <th>번호</th>
+        <td th:text="${board.id}"></td>
+    </tr>
+    <tr>
+        <th>제목</th>
+        <td th:text="${board.getTitle}"></td>
+    </tr>
+    <tr>
+        <th>작성자</th>
+        <td th:text="${board.getUsername}"></td>
+    </tr>
+    <tr>
+        <th>작성 시간</th>
+        <td th:text="${board.getCreateTime}"></td>
+    </tr>
+    <tr>
+        <th>내용</th>
+        <td th:text="${board.getContents}"></td>
+    </tr>
+</table>
+
+<button onclick="listReq()">목록</button>
+<button onclick="updateReq()">수정</button>
+<button onclick="deleteReq()">삭제</button>
+<button id="file-delete-btn" th:if="${board.fileExists}" onclick="fileDeleteReq()">파일 삭제</button>
+
+<!-- 댓글 작성 부분 -->
+<div id="comment-write">
+    <input type="text" id="writer" placeholder="작성자">
+    <input type="text" id="contents" placeholder="내용">
+    <button id="comment-write-btn" onclick="commentWrite()">댓글 작성</button>
+</div>
+
+<!-- 댓글 출력 부분 -->
+<div id="comment-list">
+    <table>
+        <thead>
+        <tr>
+            <th>댓글 번호</th>
+            <th>작성자</th>
+            <th>내용</th>
+            <th>작성 시간</th>
+            <th>댓글 삭제</th>
+            <th>댓글 수정</th> <!-- 댓글 수정 컬럼 추가 -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="comment : ${commentList}">
+            <td th:text="${comment.id}"></td>
+            <td th:text="${comment.writer}"></td>
+            <td th:text="${comment.contents}"></td>
+            <td th:text="${#temporals.format(comment.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td>
+                <button class="edit-comment-btn" data-commentId="${comment.id}">댓글 수정</button>
+            </td>
+            <td>
+                <button class="delete-comment-btn" data-commentId="${comment.id}">댓글 삭제</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+<script th:inline="javascript">
+    const commentWrite = () => {
+        const jsWriter = document.getElementById("writer").value;
+        const jsContents = document.getElementById("contents").value;
+        console.log("작성자: ", jsWriter);
+        console.log("내용: ", jsContents);
+        const jsId = [[${board.id}]];
+        $.ajax({
+            // 요청 방식: post, 요청 주소: /comment/save, 요청 데이터: 작성자, 작성 내용, 게시글 번호
+            type: "post",
+            url: "/comment/save",
+            data: {
+                "writer": jsWriter,
+                "contents": jsContents,
+                "boardId": jsId
+            },
+            success: function (res) {
+                console.log("요청 성공", res);
+                let output = "";
+                output += "<tr>";
+                output += "<td>" + res.id + "</td>";
+                output += "<td>" + res.writer + "</td>";
+                output += "<td>" + res.contents + "</td>";
+                output += "<td>" + res.createTime + "</td>";
+                output += "</tr>";
+                // 작성한 댓글을 목록에 추가
+                document.querySelector('#comment-list table tbody').insertAdjacentHTML('beforeend', output);
+
+                // 사용자가 댓글을 작성을 마치면 입력 필드를 비워서 다음 댓글을 작성할 때 기존에 입력된 텍스트를 비움.
+                document.getElementById('writer').value = '';
+                document.getElementById('contents').value = '';
+                // 댓글 작성 후에 댓글 목록을 다시 불러옴
+                loadComments();
+            },
+            error: function (err) {
+                console.log("요청 실패", err);
+            }
+        });
+    }
+
+    const fileDeleteReq = () => {
+        console.log("파일 삭제 요청");
+        const boardId = [[${board.id}]];
+        $.ajax({
+            type: "GET",
+            url: "/file/delete/" + boardId,
+            success: function (res) {
+                console.log("파일 삭제 성공", res);
+                // 파일 삭제 성공 시 로직 구현
+                alert('파일이 성공적으로 삭제되었습니다.'); // 알림 메시지 표시
+                $('#file-delete-btn').hide(); // 파일 삭제 버튼을 숨깁니다.
+            },
+            error: function (err) {
+                console.log("파일 삭제 실패", err);
+            }
+        });
+    }
+
+    // 댓글 삭제 버튼 클릭 이벤트 처리
+    document.addEventListener("click", function(e) {
+        if (e.target && e.target.classList.contains("delete-comment-btn")) {
+            const commentId = e.target.getAttribute("data-commentId");
+            commentDelete(commentId);
+        }
+    });
+
+    // 댓글 삭제 함수 정의
+    const commentDelete = (commentId) => {
+        console.log("댓글 삭제 ID: " + commentId);
+        $.ajax({
+            type: "GET",
+            url: "/comment/delete/" + commentId,
+            success: function (res) {
+                console.log("댓글 삭제 성공", res);
+                // 삭제한 댓글을 화면에서도 제거 // 처음 태그 부터
+                $(`#comment-list table tbody tr:has(td:first-child:contains('${commentId}'))`).remove();
+                // 댓글 삭제 후에 댓글 목록을 다시 불러옴
+                loadComments();
+            },
+            error: function (err) {
+                console.log("댓글 삭제 실패", err);
+            }
+        });
+    }
+
+    // 댓글 수정 버튼 클릭 이벤트 처리
+    document.addEventListener("click", function(e) {
+        if (e.target && e.target.classList.contains("edit-comment-btn")) {
+            const commentId = e.target.getAttribute("data-commentId");
+            commentEdit(commentId);
+        }
+    });
+
+    // 댓글 수정 함수 정의
+    const commentEdit = (commentId) => {
+        console.log("댓글 수정 ID: " + commentId);
+
+        // 해당 댓글의 td 태그를 선택
+        let commentRow = $("#comment-list table tbody tr:has(td:first-child:contains('" + commentId + "'))");
+        // 기존 댓글 내용을 가져옴
+        let originalComment = commentRow.find('td:nth-child(3)').text();
+
+        // textarea에 기존 댓글 내용을 채운 후, 댓글 내용을 표시하는 td 태그에 추가
+        let editArea = $('<textarea>').val(originalComment);
+        commentRow.find('td:nth-child(3)').empty().append(editArea);
+
+        // 기존 '댓글 수정' 버튼을 '확인' 버튼으로 변경
+        commentRow.find('.edit-comment-btn').text('확인').off('click').on('click', function() {
+            let editCommentValue = editArea.val();
+
+            $.ajax({
+                type: "post",
+                url: "/comment/update/" + commentId,
+                data: {
+                    "id": commentId,
+                    "contents": editCommentValue
+                },
+                success: function (res) {
+                    console.log("댓글 수정 성공", res);
+                    // 수정된 댓글을 화면에 업데이트
+                    commentRow.find('td:nth-child(3)').text(editCommentValue);
+                    // '확인' 버튼을 다시 '댓글 수정' 버튼으로 변경
+                    commentRow.find('.edit-comment-btn').text('댓글 수정').off('click').on('click', function() {
+                        commentEdit(commentId);
+                    });
+                },
+                error: function (err) {
+                    console.log("댓글 수정 실패", err);
+                }
+            });
+        });
+    }
+
+    // 댓글 목록을 불러 오는 함수
+    const loadComments = () => {
+        const boardId = [[${board.id}]];
+        $.ajax({
+            type: "GET",
+            url: "/comment/list/" + boardId,
+            success: function (res) {
+                console.log("댓글 목록 로드 성공", res);
+                let output = "";
+                res.forEach(comment => {
+                    output += "<tr>";
+                    output += "<td>" + comment.id + "</td>";
+                    output += "<td>" + comment.writer + "</td>";
+                    output += "<td>" + comment.contents + "</td>";
+                    output += "<td>" + comment.createTime + "</td>";
+                    // 댓글 삭제 버튼에 data-commentId 속성 추가
+                    output += "<td><button class=\"delete-comment-btn\" data-commentId=\"" + comment.id + "\">댓글 삭제</button></td>";
+                    output += "<td><button class=\"edit-comment-btn\" data-commentId=\"" + comment.id + "\">댓글 수정</button></td>";
+                    output += "</tr>";
+                });
+                document.querySelector('#comment-list table tbody').innerHTML = output;
+            },
+            error: function (err) {
+                console.log("댓글 목록 로드 실패", err);
+            }
+        });
+    }
+
+    window.onload = function() {
+    loadComments();
+    };
+
+    const listReq = () => {
+        console.log("목록 요청");
+        const page = [[${page}]];
+        location.href = "/board/paging?page="+page;
+    }
+    const updateReq = () => {
+        console.log("수정 요청");
+        const id = [[${board.id}]];
+        location.href = "/board/update/" + id;
+    }
+    const deleteReq = () => {
+        console.log("삭제 요청");
+        const id = [[${board.id}]];
+        location.href = "/board/delete/" + id;
+    }
+</script>
+</html>
