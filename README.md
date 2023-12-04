@@ -1,11 +1,11 @@
 # Board 게시판
 - 개발환경
--IDE: IntelliJ IDEA Community
--Spring Boot 2.6.*
--JDK 11
--mysql
--Spring Data JPA
--Thymeleaf
+- IDE: IntelliJ IDEA Community
+- Spring Boot 2.6.*
+- JDK 11
+- mysql
+- Spring Data JPA
+- Thymeleaf
 
 ## 게시판 주요기능
 1. 글쓰기(/board/save)
