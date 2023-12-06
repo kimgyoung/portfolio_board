@@ -3,21 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        .top-bar {
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
             text-align: center;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
+            font-size: 20px;  /* Decreased font size */
         }
 
-        h1 {
-            color: #333;
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
         }
 
         .menu {
+            text-align: center;
             margin: 20px 0;
+            background-color: white;
         }
 
         .menu button {
@@ -40,7 +46,7 @@
 
         .section {
             padding: 20px;
-            background-color: #ddd;
+            background-color: white;
         }
 
         footer {
@@ -48,30 +54,52 @@
             background-color: #333;
             color: #fff;
             text-align: center;
-            margin-top: 20px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .img-container {
+            width: 25%;
+            margin: auto;
+            margin-top: 20px;  /* Added a margin at the top */
+        }
+
+        .img-container img {
+            width: 100%;
         }
     </style>
 </head>
 <body>
-<h1>Dovy's Home</h1>
-<img src="/dovy.png" alt="Dovy's Image" width="300">
+<div class="top-bar">
+    <h3>Board</h3>
+</div>
+
+<div class="header">
+    <h1>Hello, Dovy's Home</h1>
+</div>
+
+<div class="img-container">
+    <img src="/dovy.png" alt="Dovy's Image" class="img-fluid mx-auto d-block">
+</div>
 
 <div class="menu">
     <button onclick="create()">글쓰기</button>
     <button onclick="paging()">게시판</button>
 </div>
 
-<div class="section">
-    <h2>기능</h2>
-    <p>게시판</p>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+        </div>
+    </div>
 </div>
 
 <footer>
-    Copyright © 2023 Dovy's Home
+    Copyright © 2023 Dovy's Home Spring Boot Board
 </footer>
 
 <script>
-
     const create = () => {
         location.href = "/board/create";
     }
@@ -80,5 +108,9 @@
         location.href = "/board/paging";
     }
 </script>
+
+<!-- Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
