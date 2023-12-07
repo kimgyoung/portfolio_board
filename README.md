@@ -12,23 +12,37 @@ Thymeleaf
 aplication.yml
 
 ## 게시판 주요 기능
+<div class="home_image">
+<img src="/C:/Users/김가영/Desktop/home.png">
+</div>
 
 ### 게시글
-1. 게시글 작성(/board/save)  
+1. 게시글 작성(/board/save, /create)  
+\- 게시글 저장  
 \- 파일(이미지) 첨부
+<div class="home_image">
+<img src="/C:/Users/김가영/Desktop/board_create.png">
+</div>
 
 2. 게시글 목록(/board/,/board/paging)  
 \- 한 페이지 게시글 5개  
 \- 최대 3개 페이지씩  
 \- /board/paging?page=1  
 \- /board/paging/1
+<div class="home_image">
+<img src="/C:/Users/김가영/Desktop/paging_page.png">
+</div>
 
 3. 게시글 조회(/board/{id})
 
-4. 게시글 수정(/board/update/{id})  
+4. 게시글 수정(/board/update/{id})
 \- 상세화면에서 수정 버튼 클릭    
 \- 서버에서 해당 게시글의 정보를 가지고 수정 화면 출력    
 \- 제목, 내용 수정 입력 받아서 서버로 요청  
+<div class="home_image">
+<img src="/C:/Users/김가영/Desktop/board_update.png">
+</div>
+
 
 5. 게시글 삭제(/board/delete/{id})  
 \- 상세화면에서 삭제 버튼 클릭  
@@ -36,22 +50,33 @@ aplication.yml
 ---
 
 ### 댓글
-1. 댓글 작성(/comment/save)
+1. 댓글 작성(/comment/save)  
 \- 작성자와 내용 입력 후 댓글 작성
 2. 댓글 목록(/list/{boardId})  
 \- 해당 게시글 id에 달린 댓글 리스트 보이기
 3. 댓글 수정(/update/{commentId})  
 \- 댓글 수정 버튼 클릭 후 수정 내용 작성  
-\-
-\- 확인 버튼 클릭  
-\- 수정 성공시 창 알림  
+\- 확인(댓글 수정 버튼이 확인버튼으로 바뀜) 버튼 클릭
+<div class="home_image">
+<img src="/C:/Users/김가영/Desktop/comment_update1.png">
+</div>
+<div class="home_image">
+<img src="/C:/Users/김가영/Desktop/comment_update2.png">
+</div>
+
+
 4. 댓글 삭제(/delete/{commentId)
 
 ---
 ### 파일
 1. 파일 다운(/download/{uuid}/{fileName})
-2. 파일 수정
-3. 파일 삭제(file/delete/{boardId})
+2. 파일 수정(board/update/{id})  
+\- 게시글 수정 화면에 파일 변경 가능
+3. 파일 삭제(file/delete/{boardId})  
+\- 성공시 파일 삭제하였습니다 팝업 창
+<div class="home_image">
+<img src="/C:/Users/김가영/Desktop/file_delete.png">
+</div>
 
 ## 향후 업데이트 예정 기능
 1. 다중 파일 첨부 기능
@@ -86,3 +111,6 @@ aplication.yml
 
 #### v1.7.1 (2023.12.01)
 1. [수정] home html 헤더 내용 변경, 섹션 삭제
+
+#### v1.7.1 (2023.12.07)
+게시글 목록 이전 다음 버튼 클릭 버그 수정 예정
