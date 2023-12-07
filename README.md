@@ -13,15 +13,15 @@ aplication.yml
 
 ## 게시판 주요 기능
 <div class="home_image">
-<img src="/C:/Users/김가영/Desktop/home.png">
+<img src="/C:/Users/김가영/Desktop/portfolio_board/image/home.png">
 </div>
-
+C:\Users\김가영\Desktop\portfolio_board\image
 ### 게시글
 1. 게시글 작성(/board/save, /create)  
 \- 게시글 저장  
 \- 파일(이미지) 첨부
 <div class="home_image">
-<img src="/C:/Users/김가영/Desktop/board_create.png">
+<img src="/C:/Users/김가영/Desktop/portfolio_board/image/board_create.png">
 </div>
 
 2. 게시글 목록(/board/,/board/paging)  
@@ -30,7 +30,7 @@ aplication.yml
 \- /board/paging?page=1  
 \- /board/paging/1
 <div class="home_image">
-<img src="/C:/Users/김가영/Desktop/paging_page.png">
+<img src="/C:/Users/김가영/Desktop/portfolio_board/image/paging_page.png">
 </div>
 
 3. 게시글 조회(/board/{id})
@@ -40,7 +40,7 @@ aplication.yml
 \- 서버에서 해당 게시글의 정보를 가지고 수정 화면 출력    
 \- 제목, 내용 수정 입력 받아서 서버로 요청  
 <div class="home_image">
-<img src="/C:/Users/김가영/Desktop/board_update.png">
+<img src="/C:/Users/김가영/Desktop/portfolio_board/image/board_update.png">
 </div>
 
 
@@ -58,10 +58,10 @@ aplication.yml
 \- 댓글 수정 버튼 클릭 후 수정 내용 작성  
 \- 확인(댓글 수정 버튼이 확인버튼으로 바뀜) 버튼 클릭
 <div class="home_image">
-<img src="/C:/Users/김가영/Desktop/comment_update1.png">
+<img src="/C:/Users/김가영/Desktop/portfolio_board/image/comment_update1.png">
 </div>
 <div class="home_image">
-<img src="/C:/Users/김가영/Desktop/comment_update2.png">
+<img src="/C:/Users/김가영/Desktop/portfolio_board/image/comment_update.png">
 </div>
 
 
