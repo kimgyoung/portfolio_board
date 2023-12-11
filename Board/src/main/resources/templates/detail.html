@@ -78,6 +78,25 @@
             background-color: #3498db;
             color: white;
         }
+
+        .download-btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px;
+            font-size: 14px;
+            text-decoration: none;
+            color: white;
+            background-color: #27ae60; /* 초록색 배경 */
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease; /* 버튼 클릭 시 애니메이션 효과 */
+        }
+        .download-btn:hover {
+            background-color: #2ecc71; /* 마우스 올리면 색상 변경 */
+        }
+        ul.no-bullet {
+            list-style-type: none; /* 점 없애기 */
+        }
     </style>
 </head>
 <body>
@@ -108,7 +127,14 @@
 <button onclick="updateReq()">수정</button>
 <button onclick="deleteReq()">삭제</button>
 <button id="file-delete-btn" th:if="${board.fileExists}" onclick="fileDeleteReq()">파일 삭제</button>
-
+<div th:if="${files != null}">
+    <ul class="no-bullet">
+        <li th:each="file : ${files}">
+            <span th:text="${file.fileName}"></span>
+            <a class="download-btn" th:href="@{/download/{uuid}/{filename}(uuid=${file.uuid}, filename=${file.fileName})}">파일 다운로드</a>
+        </li>
+    </ul>
+</div>
 <!-- 댓글 작성 부분 -->
 <div id="comment-write">
     <input type="text" id="writer" placeholder="작성자">

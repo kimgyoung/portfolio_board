@@ -27,8 +27,8 @@ public class BoardDto {
         return Board.builder()
                 .id(id)
                 .title(title)
-                .contents(contents)
                 .username(username)
+                .contents(contents)
                 .createTime(createTime)
                 .updateTime(LocalDateTime.now())
                 .fileExists(fileExists)
@@ -43,8 +43,8 @@ public class BoardDto {
         return new BoardDto(
                 board.getId(),
                 board.getTitle(),
-                board.getContents(),
                 board.getUsername(),
+                board.getContents(),
                 board.getCreateTime(),
                 board.getUpdateTime(),
                 board.getFileExists(),

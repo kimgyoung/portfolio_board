@@ -59,8 +59,11 @@
     </div>
     <br>
     <!-- New Files Input -->
-    <label for="newFiles">New Files:</label>
-    <input type="file" id="newFiles" name="newFiles" multiple>
+    <label>New Files:</label>
+    <div id="file-inputs">
+        <input type="file" name="newFiles" class="new-file"> <br>
+    </div>
+    <button type="button" id="add-file">파일 추가</button>
     <br>
     <!-- New Files Preview -->
     <div id="preview"></div>
@@ -68,11 +71,33 @@
     <input type="submit" value="글수정">
 </form>
 
-<!-- JavaScript to preview new files -->
+<!-- JavaScript to add new file inputs and preview new files -->
 <script>
-    document.getElementById('newFiles').addEventListener('change', function(e) {
-        var preview = document.getElementById('preview');
-        preview.innerHTML = '';
+    document.getElementById('add-file').addEventListener('click', function() {
+        var fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.name = 'newFiles';
+        fileInput.className = 'new-file';
+
+        var br = document.createElement('br');
+
+        document.getElementById('file-inputs').appendChild(fileInput);
+        document.getElementById('file-inputs').appendChild(br);
+
+        fileInput.addEventListener('change', function(e) {
+            previewFiles(e, fileInput);
+        });
+    });
+
+    var allInputs = document.querySelectorAll('.new-file');
+    allInputs.forEach(function(input) {
+        input.addEventListener('change', function(e) {
+            previewFiles(e, input);
+        });
+    });
+
+    function previewFiles(e, input) {
+        var preview = document.createElement('div');
         Array.from(e.target.files).forEach(function(file) {
             var img = document.createElement('img');
             img.src = URL.createObjectURL(file);
@@ -82,7 +107,8 @@
             }
             preview.appendChild(img);
         });
-    });
+        input.after(preview);
+    }
 </script>
 
 </body>

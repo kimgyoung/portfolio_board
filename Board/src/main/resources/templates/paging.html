@@ -112,8 +112,8 @@
 </table>
 
 <div class="paging-buttons">
-    <a th:href="@{/paging(page=1)}">처음</a>
-    <a th:href="${boardList.first} ? '#' : @{/paging(page=${boardList.number})}">이전</a>
+    <a th:href="@{/board/paging(page=1)}">처음</a>
+    <a th:href="${boardList.first} ? '#' : @{/board/paging(page=${boardList.number})}">이전</a>
 
     <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
             <span th:if="${page == boardList.number + 1}" th:text="${page}"></span>
@@ -122,7 +122,7 @@
             </span>
         </span>
 
-    <a th:href="${boardList.last} ? '#' : @{/paging(page=${boardList.number + 2})}">다음</a>
+    <a th:href="${boardList.last} ? '#' : @{/board/paging(page=${boardList.number + 2})}">다음</a>
     <a th:href="@{/board/paging(page=${boardList.totalPages})}">마지막</a>
 </div>
 

@@ -15,6 +15,7 @@ import java.util.List;
 @Entity
 public class Board {
 
+    // 유저 추가
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,10 +23,10 @@ public class Board {
     @Column(length = 45)
     private String username;
 
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     private String title;
 
-    @Column(length = 256)
+    @Column(length = 256, nullable = false)
     private String contents;
 
     private LocalDateTime createTime;

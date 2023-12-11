@@ -61,8 +61,50 @@
     title: <input type="text" name="title"> <br>
     writer: <input type="text" name="username"> <br>
     contents: <textarea name="contents" cols="30" rows="10"></textarea> <br>
-    file: <input type="file" name="files" multiple> <br>
+    <div id="file-inputs">
+        file: <input type="file" name="files" multiple class="new-file"> <br>
+    </div>
+    <button type="button" id="add-file">파일 추가</button>
+    <div id="preview"></div>
     <input type="submit" value="글작성">
 </form>
+
+<script>
+    document.getElementById('add-file').addEventListener('click', function() {
+        var fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.name = 'files';
+        fileInput.multiple = true;
+        fileInput.className = 'new-file';
+
+        var br = document.createElement('br');
+
+        document.getElementById('file-inputs').appendChild(br);
+        document.getElementById('file-inputs').appendChild(fileInput);
+
+        fileInput.addEventListener('change', function(e) {
+            previewFiles(e, fileInput);
+        });
+    });
+
+    var initialInput = document.querySelector('.new-file');
+    initialInput.addEventListener('change', function(e) {
+        previewFiles(e, initialInput);
+    });
+
+    function previewFiles(e, input) {
+        var preview = document.createElement('div');
+        Array.from(e.target.files).forEach(function(file) {
+            var img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.style.width = '200px';
+            img.onload = function() {
+                URL.revokeObjectURL(this.src);
+            }
+            preview.appendChild(img);
+        });
+        input.after(preview);
+    }
+</script>
 </body>
 </html>

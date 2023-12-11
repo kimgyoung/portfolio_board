@@ -1,14 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.BoardDto;
-import com.example.demo.dto.FileDto;
-import com.example.demo.entity.Board;
 import com.example.demo.entity.BoardFile;
-import com.example.demo.repository.BoardRepository;
 import com.example.demo.repository.FileRepository;
 import com.example.demo.service.BoardService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/board")
@@ -98,6 +93,7 @@ public class BoardController {
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id){
         boardService.delete(id);
+        boardService.deleteFile(id);
         return "home";
     }
 

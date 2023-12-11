@@ -17,9 +17,11 @@ import java.nio.file.Paths;
 public class FileDownloadController {
     private final BoardService boardService;
 
+    // "C:/Users/G/Desktop/portfolio_board/boardFile/";
+    // "C:/Users/김가영/Desktop/portfolio_board/Board/boardFile/";
     @GetMapping("/download/{uuid}/{fileName}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String uuid, @PathVariable String fileName){
-        Path filePath = Paths.get("C:/Users/G/Desktop/demo/boardFile/" + uuid + fileName);
+        Path filePath = Paths.get("C:/Users/G/Desktop/portfolio_board/boardFile/" + uuid + fileName);
 
         try {
             Resource resource = new UrlResource(filePath.toUri());

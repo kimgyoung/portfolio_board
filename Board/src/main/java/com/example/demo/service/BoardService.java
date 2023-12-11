@@ -32,7 +32,8 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final FileRepository fileRepository;
-    private final String filePath = "C:/Users/김가영/Desktop/portfolio_board/Board/boardFile/";
+    private final String filePath = "C:/Users/G/Desktop/portfolio_board/boardFile/";
+    //private final String filePath = "C:/Users/김가영/Desktop/portfolio_board/Board/boardFile/";
 
     // 가져온 데이터 DB에 저장
     @Transactional
@@ -99,7 +100,7 @@ public class BoardService {
         Page<Board> boards = boardRepository.findAll(
                 // 정렬 처리 해서 가져 옴(자동)
                 PageRequest.of(page, size));
-        // Board를 BoardDto로 매핑하면서, boardFiles도 FileDto 리스트로 변환하여 처리함
+        // Board를 BoardDto로 매핑 하면서, boardFiles도 FileDto 리스트로 변환하여 처리
         return boards.map(board -> {
             // board의 boardFiles를 FileDto 리스트로 변환
             List<FileDto> fileDtos = board.getBoardFiles().stream()
@@ -134,24 +135,23 @@ public class BoardService {
             Optional<Board> boardOptional = boardRepository.findById(boardDto.getId());
             Board board = boardOptional.get();
 
-            // 새로운 파일이 있다면 기존 파일을 삭제하고 새 파일을 업로드
+            // 새로운 파일이 있다면 기존 파일을 삭제 하고 새 파일을 업로드
             if (newFiles != null && newFiles.length > 0 && !newFiles[0].isEmpty()) {
-                // 기존에 첨부되어 있던 파일 삭제
+                // 기존에 첨부 되어 있던 파일 삭제
                 List<BoardFile> oldFiles = fileRepository.findByBoardId(board.getId());
                 for (BoardFile oldFile : oldFiles) {
                     deleteFile(board.getId());  // 기존 파일 삭제
                 }
 
-                // 새로운 파일을 저장하고 DB에 저장
+                // 새로운 파일을 저장 하고 DB에 저장
                 save(boardDto, newFiles);
             }
 
-            // 게시글 정보를 업데이트하고 DB에 저장
+            // 게시글 정보를 업데이트 하고 DB에 저장
             board.updateFromDto(boardDto);
             boardRepository.save(board);
         }
     }
-
 
     @Transactional
     public void delete(Long id) {
@@ -172,6 +172,11 @@ public class BoardService {
     public void deleteFile(Long boardId){
         BoardFile boardFile = getFileByBoardId(boardId);
 
+        if (boardFile == null) {
+            System.out.println("해당하는 boardId의 파일이 없습니다.");
+            return;
+        }
+
         // 실제 파일 시스템에서의 파일 경로
         String deleteFilePath = filePath + boardFile.getUuid()+ boardFile.getFileName();
 
@@ -191,7 +196,7 @@ public class BoardService {
         try {
             fileRepository.deleteById(boardFile.getId());
 
-            // 게시글에 첨부된 모든 파일이 삭제되었다면 fileExists를 false로 설정
+            // 게시글에 첨부된 모든 파일이 삭제 되었다면 fileExists를 false로 설정
             Board board = boardFile.getBoard();
             if (fileRepository.findByBoardId(board.getId()).isEmpty()) {
                 board.setFileExists(false);
