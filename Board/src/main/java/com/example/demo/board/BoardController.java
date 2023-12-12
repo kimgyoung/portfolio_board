@@ -1,13 +1,14 @@
-package com.example.demo.controller;
+package com.example.demo.board;
 
-import com.example.demo.dto.BoardDto;
-import com.example.demo.entity.BoardFile;
-import com.example.demo.repository.FileRepository;
-import com.example.demo.service.BoardService;
+import com.example.demo.file.BoardFile;
+import com.example.demo.file.FileRepository;
+import com.example.demo.security.CustomUserDetails;
+import com.example.demo.user.User;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -60,11 +61,11 @@ public class BoardController {
 
     // 변경 된 게시글 데이터를 받아 와서 저장
     @PostMapping("update")
-    public String update(@ModelAttribute BoardDto boardDto, @RequestParam(value = "newFiles", required = false) MultipartFile[] newFiles) throws IOException {
+    public String update(@ModelAttribute BoardDto boardDto,
+                         @RequestParam(value = "newFiles", required = false) MultipartFile[] newFiles) throws IOException {
         boardService.update(boardDto, newFiles);
         return "redirect:/board/";
     }
-
 
     // 글 목록 중 한 줄 씩 불러 온 후 상세 정보로
     @GetMapping("/{id}")
@@ -82,10 +83,11 @@ public class BoardController {
 
     // 입력 받은 데이터 글 저장
     @PostMapping("/save")                                               // 파일 불러 오기
-    public String save(@ModelAttribute BoardDto boardDto, @RequestParam MultipartFile[] files) throws IOException {
+    public String save(@ModelAttribute BoardDto boardDto,
+                       @RequestParam MultipartFile[] files,
+                       @AuthenticationPrincipal CustomUserDetails customUserDetails) throws IOException {
         boardDto.setCreateTime(LocalDateTime.now());
         boardService.save(boardDto, files);
-
         return "redirect:/board/";
     }
 

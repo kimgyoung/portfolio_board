@@ -1,7 +1,6 @@
-package com.example.demo.dto;
+package com.example.demo.comment;
 
-import com.example.demo.entity.Board;
-import com.example.demo.entity.Comment;
+import com.example.demo.board.Board;
 import lombok.*;
 
 import java.time.LocalDateTime;

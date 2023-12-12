@@ -1,7 +1,8 @@
-package com.example.demo.entity;
+package com.example.demo.board;
 
-import com.example.demo.dto.BoardDto;
-import com.example.demo.dto.FileDto;
+import com.example.demo.file.BoardFile;
+import com.example.demo.comment.Comment;
+import com.example.demo.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,6 @@ import java.util.List;
 @Entity
 public class Board {
 
-    // 유저 추가
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,11 +35,9 @@ public class Board {
 
     private Boolean fileExists;
 
-    //  1   :   다
-    // 소유    비소유
-    // mappedBy = "board": comment 클래스 에 있는 변수 명(board)을 적어 주면 됨
+    // mappedBy = "board": comment 클래스에 있는 변수 명(board)
     // cascade = CascadeType.REMOVE: 게시물이 삭제 되면 댓글을 자동 으로 지워 줌
-    // orphanRemoval = true: 연결 관계가 끊어 지면 자동 삭제(해라)
+    // orphanRemoval = true: 연결 관계가 끊어 지면 자동 삭제
     // fetch = FetchType.LAZY: 지연 로딩(성능 최적화)
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Comment> comment = new ArrayList<>();
@@ -47,9 +45,12 @@ public class Board {
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BoardFile> boardFiles = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Builder
-    public Board(Long id, String username, String title, String contents, LocalDateTime createTime, LocalDateTime updateTime, Boolean fileExists){
+    public Board(Long id, String username, String title, String contents, LocalDateTime createTime, LocalDateTime updateTime, Boolean fileExists, User user){
         this.id = id;
         this.username = username;
         this.title = title;
@@ -57,6 +58,7 @@ public class Board {
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.fileExists = fileExists != null ? fileExists : false;  // fileExists 필드가 null이면 false로 설정
+        this.user = user;
     }
 
     public void updateFromDto(BoardDto boardDto){

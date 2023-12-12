@@ -1,11 +1,9 @@
-package com.example.demo.repository;
+package com.example.demo.file;
 
-import com.example.demo.entity.BoardFile;
+import com.example.demo.file.BoardFile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.io.File;
 import java.util.List;
-import java.util.Optional;
 
 public interface FileRepository extends JpaRepository<BoardFile, Long> {
     // 보드를 확인 해서 보드 반환

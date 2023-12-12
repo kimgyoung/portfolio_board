@@ -1,5 +1,6 @@
-package com.example.demo.entity;
+package com.example.demo.file;
 
+import com.example.demo.board.Board;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,18 +18,18 @@ public class BoardFile {
     private Long id;
 
     // 파일 경로 - 필요 낫널, 길이 설정은 X
+    @Column(nullable = false)
     private String filePath;
 
-    // 파일 이름 - 필요 낫널
+    @Column(nullable = false)
     private String fileName;
 
-    // 파일 포맷 - 필요 낫널
+    @Column(nullable = false)
     private String fileType;
 
-    // 파일 크기 - ?
     private Long fileSize;
 
-    // uuid(랜덤키) - 결국 에는 저장이 되어야 하니까
+    // uuid(랜덤키) - 결국 저장이 되어야 하니까
     private String uuid;
 
     @ManyToOne(fetch = FetchType.LAZY)

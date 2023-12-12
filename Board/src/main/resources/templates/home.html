@@ -86,7 +86,8 @@
 <div class="menu">
     <button onclick="create()">글쓰기</button>
     <button onclick="paging()">게시판</button>
-    <!--button onclick="login()">로그인</button-->
+    <button onclick="login()">로그인</button>
+    <button onclick="join()">회원가입</button>
 </div>
 
 <div class="container">
@@ -104,9 +105,14 @@
     const create = () => {
         location.href = "/board/create";
     }
-
     const paging = () => {
         location.href = "/board/paging";
+    }
+    const login = () => {
+        location.href = "/login";
+    }
+    const join = () => {
+        location.href = "/join";
     }
 </script>
 

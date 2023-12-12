@@ -1,4 +1,4 @@
-# Board v1.7.1
+# Board v1.7.2
 
 ## 개발환경
 IDE: IntelliJ IDEA Community  
@@ -116,8 +116,13 @@ aplication.yml
 #### v1.7.1 (2023.12.01)
 1. [수정] home html 헤더 내용 변경, 섹션 삭제
 
-#### v1.7.1 (2023.12.11)
+#### v1.7.2 (2023.12.11)
 1. [수정] 게시글 목록 이전 다음 버튼
 2. [수정] detail 작성자 <-> 내용 바뀌어서 출력
 3. [추가] title, contents 필드 nullable = false
 4. [추가] 파일 다운로드 버튼, 파일 프리뷰
+
+### * ing- 로그인 User -> 게시판 연동
+#### v2.7.2 (2023.12.12)
+1. [추가] User, 로그인, 회원가입, HomeController
+2. [수정] 패키지, 구조 변경

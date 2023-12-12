@@ -1,9 +1,5 @@
-package com.example.demo.controller;
+package com.example.demo.comment;
 
-import com.example.demo.dto.CommentDto;
-import com.example.demo.entity.Board;
-import com.example.demo.entity.Comment;
-import com.example.demo.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

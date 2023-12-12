@@ -1,7 +1,6 @@
-package com.example.demo.dto;
+package com.example.demo.file;
 
-import com.example.demo.entity.Board;
-import com.example.demo.entity.BoardFile;
+import com.example.demo.board.Board;
 import lombok.*;
 
 @AllArgsConstructor // toFileDto 때문에 설정
