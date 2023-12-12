@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-
 @Slf4j
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
@@ -38,10 +37,8 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             chain.doFilter(request, response);
             return;
         }
-
         // ** Bearer 제거.
         String jwt = prefixJwt.replace(JwtTokenProvider.TOKEN_PREFIX, "");
-
         try {
             log.debug("토큰 있음.");
 
@@ -82,27 +79,3 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

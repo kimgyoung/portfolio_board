@@ -25,7 +25,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(username).orElseThrow(
                 () -> new Exception401("인증되지 않았습니다.")
         );
-
         return new CustomUserDetails(user);
     }
 }

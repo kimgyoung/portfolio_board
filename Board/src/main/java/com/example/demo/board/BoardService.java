@@ -5,7 +5,6 @@ import com.example.demo.file.BoardFile;
 import com.example.demo.file.FileRepository;
 import com.example.demo.security.CustomUserDetails;
 import com.example.demo.user.User;
-import com.example.demo.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +32,6 @@ import java.util.stream.Collectors;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-    private final UserRepository userRepository;
     private final FileRepository fileRepository;
     private final String filePath = "C:/Users/G/Desktop/portfolio_board/boardFile/";
     //private final String filePath = "C:/Users/김가영/Desktop/portfolio_board/Board/boardFile/";
@@ -45,7 +43,6 @@ public class BoardService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = customUserDetails.getUser();
-
         if (user == null || user.getId() == null) {
             throw new IllegalArgumentException("User must be logged in to write a post.");
         }
