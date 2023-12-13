@@ -6,14 +6,11 @@
 </head>
 <body>
 <h1>로그인</h1>
-
 <form id="loginForm">
     <label for="loginEmail">Email:</label>
     <input type="email" id="loginEmail" name="loginEmail" required><br><br>
-
     <label for="loginPassword">Password:</label>
     <input type="password" id="loginPassword" name="loginPassword" required><br><br>
-
     <button type="button" id="loginSubmitButton">제출</button>
 </form>
 <script>
@@ -21,12 +18,10 @@
          const submitLoginForm = async () => {
              const email = document.getElementById('loginEmail').value;
              const password = document.getElementById('loginPassword').value;
-
              const data = {
                  email,
                  password,
              };
-
              try {
                  const response = await fetch('http://localhost:8080/login', {
                      method: 'POST',
@@ -35,24 +30,22 @@
                      },
                      body: JSON.stringify(data)
                  });
-
                  const result = await response.json();
-
-                 if (result.success) {
+                 if (response.ok) {
+                     const jwtToken = result.response; // JWT 토큰 값 추출
+                     // JWT 토큰을 로컬 스토리지에 저장
+                     localStorage.setItem('jwtToken', jwtToken);
                      alert("로그인에 성공했습니다!");
                      window.location.href = '/';
                  } else {
                      alert("에러: " + result.error.message);
                  }
-
              } catch (error) {
                  console.error('에러:', error);
              }
          };
          document.getElementById('loginSubmitButton').addEventListener('click', submitLoginForm);
     });
-
 </script>
-
 </body>
 </html>

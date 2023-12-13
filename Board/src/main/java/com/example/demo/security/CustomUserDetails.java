@@ -17,10 +17,6 @@ public class CustomUserDetails implements UserDetails {
     // 여기 유저 정보가 저장 되고 있음
     private final User user;
 
-    public User getUser() {
-        return this.user;
-    }
-
     @Override
     // ** 사용자에게 부여된 권한을 GrantedAuthority 객체의 컬렉션으로 반환.
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -41,8 +37,7 @@ public class CustomUserDetails implements UserDetails {
         return this.user.getEmail();
     }
 
-
-    // ** 이 예제에서는 단순화를 위해 항상 true를 반환하도록 되어 있음.
+    // ** 이 예제들은 단순화를 위해 항상 true를 반환
     @Override
     // ** 사용자 계정이 만료되지 않았는지 여부를 반환.
     public boolean isAccountNonExpired() {

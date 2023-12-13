@@ -4,10 +4,12 @@ import com.example.demo.file.BoardFile;
 import com.example.demo.file.FileRepository;
 import com.example.demo.security.CustomUserDetails;
 import com.example.demo.user.User;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +20,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Controller
+@RequiredArgsConstructor
 @RequestMapping("/board")
-@AllArgsConstructor
+@Controller
 public class BoardController {
 
     private final BoardService boardService;
@@ -30,6 +32,18 @@ public class BoardController {
     @GetMapping("/create")
     public String create(){
         return "create";
+    }
+
+    // 입력 받은 데이터 글 저장 // 파일 불러 오기
+    @PostMapping("/save")
+    @PreAuthorize("isAuthenticated()")
+    public String save(@ModelAttribute BoardDto boardDto,
+                       @RequestParam(required = false)MultipartFile[] files,
+                       Authentication authentication) throws IOException {
+        authentication.getPrincipal();
+        boardDto.setCreateTime(LocalDateTime.now());
+        boardService.save(boardDto, files, authentication);
+        return "redirect:/board/";
     }
 
     // model <-> html
@@ -52,18 +66,17 @@ public class BoardController {
     // 변경전 게시글 데이터를 가져 와서 update로 넘겨 줌
     @GetMapping("/update/{id}")
     public String updateForm(@PathVariable Long id, Model model){
-
         BoardDto boardDto = boardService.findById(id);
         model.addAttribute("board", boardDto);
-
         return "update";
     }
 
     // 변경 된 게시글 데이터를 받아 와서 저장
     @PostMapping("update")
     public String update(@ModelAttribute BoardDto boardDto,
-                         @RequestParam(value = "newFiles", required = false) MultipartFile[] newFiles) throws IOException {
-        boardService.update(boardDto, newFiles);
+                         @RequestParam(value = "newFiles", required = false) MultipartFile[] newFiles
+                         , Authentication authentication) throws IOException {
+        boardService.update(boardDto, newFiles , authentication);
         return "redirect:/board/";
     }
 
@@ -81,21 +94,10 @@ public class BoardController {
         return "detail";
     }
 
-    // 입력 받은 데이터 글 저장
-    @PostMapping("/save")                                               // 파일 불러 오기
-    public String save(@ModelAttribute BoardDto boardDto,
-                       @RequestParam MultipartFile[] files,
-                       @AuthenticationPrincipal CustomUserDetails customUserDetails) throws IOException {
-        boardDto.setCreateTime(LocalDateTime.now());
-        boardService.save(boardDto, files);
-        return "redirect:/board/";
-    }
-
     // id 값 가져 와서 게시 글 삭제
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id){
         boardService.delete(id);
-        boardService.deleteFile(id);
         return "home";
     }
 

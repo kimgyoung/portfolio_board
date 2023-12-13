@@ -3,6 +3,7 @@ package com.example.demo.user;
 import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.util.ApiUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -31,7 +31,6 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-
         return authenticationConfiguration.getAuthenticationManager();
         //* BCrypt : 기본으로 사용. 가장 많이 사용 되는 알고리즘
         //* SCrypt : 개발자가 직접 필요에 따라 변경 가능

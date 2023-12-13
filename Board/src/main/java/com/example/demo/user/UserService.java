@@ -47,12 +47,6 @@ public class UserService {
             );
             // ** 인증 완료 값을 받아 온다.
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-
-            // ** SecurityContext에 Authentication 객체를 설정.
-            // 로그인 후 인증된 user 값을 게시글에 사용하기 위함
-            // SecurityContext에 Authentication 객체가 유지되어 다른 요청에서 사용
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
             // ** 토큰 발급.
             return JwtTokenProvider.create(customUserDetails.getUser());
 
