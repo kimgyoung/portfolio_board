@@ -30,9 +30,17 @@ public class BoardController {
 
     // create 로 이동
     @GetMapping("/create")
-    public String create(){
+    public String create(Authentication authentication) {
+
+        /*// 로그인 되어 있지 않다면 로그인 페이지로 리다이렉트
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/login";
+        }
+
+         */
         return "create";
     }
+
 
     // 입력 받은 데이터 글 저장 // 파일 불러 오기
     @PostMapping("/save")

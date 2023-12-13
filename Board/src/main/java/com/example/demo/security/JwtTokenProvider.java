@@ -12,8 +12,8 @@ import java.util.Date;
 
 public class JwtTokenProvider {
 
-    // ** JWT 토큰의 만료 시간을 1시간으로 설정.
-    private static final Long EXP = 1000L * 60 * 60;
+    // ** JWT 토큰의 만료 시간을 2시간으로 설정.
+    private static final Long EXP = 1000L * 60 * 60 * 2;
 
     // ** 인증 헤더에 사용될 토큰의 접두어 ("Bearer ")
     public static final String TOKEN_PREFIX = "Bearer ";

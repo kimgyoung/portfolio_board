@@ -75,7 +75,7 @@
 
         boardForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-
+            
             const title = boardForm.elements.title.value;
             const writer = boardForm.elements.username.value;
             const contents = boardForm.elements.contents.value;
@@ -87,7 +87,8 @@
             formData.append('title', title);
             formData.append('writer', writer);
             formData.append('contents', contents);
-            // 파일이 추가되었을 때만 반복문 실행
+
+            // 파일이 추가 되었을 때만 반복문 실행
             if (files && files.length > 0) {
                 files.forEach((file, index) => {
                     formData.append('files', file);

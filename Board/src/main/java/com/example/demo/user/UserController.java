@@ -4,11 +4,13 @@ import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.util.ApiUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
@@ -24,8 +26,12 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiUtils.ApiResult<?>> login(@RequestBody @Valid UserDto userDto){
-        String jwt = userService.login(userDto);
-        return ResponseEntity.ok().header(JwtTokenProvider.HEADER, jwt).body(ApiUtils.success(jwt));
+        try {
+            String jwt = userService.login(userDto);
+            return ResponseEntity.ok().header(JwtTokenProvider.HEADER, jwt).body(ApiUtils.success(jwt));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiUtils.error("인증 실패", HttpStatus.valueOf(HttpServletResponse.SC_UNAUTHORIZED)));
+        }
     }
 
 }

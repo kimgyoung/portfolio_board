@@ -33,11 +33,11 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final FileRepository fileRepository;
-    private final String filePath = "C:/Users/G/Desktop/portfolio_board/boardFile/";
-    //private final String filePath = "C:/Users/김가영/Desktop/portfolio_board/Board/boardFile/";
+    //private final String filePath = "C:/Users/G/Desktop/portfolio_board/boardFile/";
+    private final String filePath = "C:/Users/김가영/Desktop/portfolio_board/Board/boardFile/";
 
 
-    // Authentication에서 User를 추출 하는 메서드
+    // Authentication에서 User를 추출 하는 메서드 //  Spring Security에서 인증된 사용자의 정보를 추출
     private User getUserFromAuthentication(Authentication authentication) {
         Object principal = authentication.getPrincipal();
         if (principal instanceof CustomUserDetails) {

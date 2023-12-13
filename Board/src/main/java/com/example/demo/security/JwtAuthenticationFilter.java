@@ -6,6 +6,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.demo.user.StringArrayConverter;
 import com.example.demo.user.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -70,12 +71,20 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         }
         catch (SignatureVerificationException sve) {
             log.debug("토큰 검증 실패");
+            sendErrorResponse(response, "토큰 검증 실패" , HttpServletResponse.SC_UNAUTHORIZED);
         }
         catch (TokenExpiredException tee) {
             log.debug("토큰 사용 만료");
+            sendErrorResponse(response, "토큰 사용 만료", HttpServletResponse.SC_UNAUTHORIZED);
         } finally {
             // ** 필터로 응답을 넘긴다.
             chain.doFilter(request, response);
         }
+    }
+    private void sendErrorResponse(HttpServletResponse response, String errorMessage, int statusCode) throws IOException {
+        response.setStatus(statusCode);
+        response.setContentType("application/json");
+        response.getWriter().write("{\"error\": \"" + errorMessage + "\"}");
+        response.getWriter().flush();
     }
 }
