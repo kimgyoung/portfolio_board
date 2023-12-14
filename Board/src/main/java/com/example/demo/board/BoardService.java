@@ -33,33 +33,18 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final FileRepository fileRepository;
-    //private final String filePath = "C:/Users/G/Desktop/portfolio_board/boardFile/";
-    private final String filePath = "C:/Users/김가영/Desktop/portfolio_board/Board/boardFile/";
-
-
-    // Authentication에서 User를 추출 하는 메서드 //  Spring Security에서 인증된 사용자의 정보를 추출
-    private User getUserFromAuthentication(Authentication authentication) {
-        Object principal = authentication.getPrincipal();
-        if (principal instanceof CustomUserDetails) {
-            return ((CustomUserDetails) principal).getUser();
-        } else if (principal instanceof User) {
-            return (User) principal;
-        } else {
-            throw new RuntimeException("Unsupported principal type: " + principal.getClass());
-        }
-    }
+    private final String filePath = "C:/Users/G/Desktop/portfolio_board/boardFile/";
+    //private final String filePath = "C:/Users/김가영/Desktop/portfolio_board/Board/boardFile/";
 
     // 가져온 데이터 DB에 저장
     @Transactional
-    public void save(BoardDto boardDto, MultipartFile[] files,  Authentication authentication) throws IOException {
+    public void save(User user, BoardDto boardDto, MultipartFile[] files) throws IOException {
         boardDto.setCreateTime(LocalDateTime.now());
         // 저장 경로
         Path uploadPath = Paths.get(filePath);
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
-        // 사용자 정보를 얻어 오는 부분 수정
-        User user = getUserFromAuthentication(authentication);
 
         // 게시글 DB에 저장 후 pk를 받아 옴
         Long id = boardRepository.save(boardDto.toEntity(user)).getId();
@@ -143,7 +128,7 @@ public class BoardService {
     }
 
     @Transactional
-    public void update(BoardDto boardDto, MultipartFile[] newFiles , Authentication authentication) throws IOException {
+    public void update(User user, BoardDto boardDto, MultipartFile[] newFiles) throws IOException {
         if(boardRepository.findById(boardDto.getId()).isPresent()){
             Optional<Board> boardOptional = boardRepository.findById(boardDto.getId());
             Board board = boardOptional.get();
@@ -156,7 +141,7 @@ public class BoardService {
                     deleteFile(board.getId());  // 기존 파일 삭제
                 }
                 // 새로운 파일을 저장 하고 DB에 저장
-                save(boardDto, newFiles , authentication);
+                save(user, boardDto, newFiles);
             }
             // 게시글 정보를 업데이트 하고 DB에 저장
             board.updateFromDto(boardDto);

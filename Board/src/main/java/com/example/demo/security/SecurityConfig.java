@@ -84,10 +84,19 @@ public class SecurityConfig {
 
         // 10. 인증, 권한 필터 설정
         http.authorizeRequests(
-                authorize -> authorize.antMatchers("/carts/**","/options/**", "/orders/**").authenticated()
-                        .antMatchers("/admin/**")
-                        .access("hasRole('ADMIN')")
-                        .anyRequest().permitAll()
+                authorize -> {
+                    try {
+                        authorize.antMatchers("/board/create","/carts/**","/options/**", "/orders/**").authenticated()
+                                .antMatchers("/admin/**")
+                                .access("hasRole('ADMIN')")
+                                .anyRequest().permitAll()
+                                .and()
+                                .exceptionHandling()
+                                .accessDeniedPage("/");
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
         );
         return http.build();
     }

@@ -1,5 +1,6 @@
 package com.example.demo.board;
 
+import com.example.demo.error.exception.Exception401;
 import com.example.demo.file.BoardFile;
 import com.example.demo.file.FileRepository;
 import com.example.demo.security.CustomUserDetails;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -30,27 +32,23 @@ public class BoardController {
 
     // create 로 이동
     @GetMapping("/create")
-    public String create(Authentication authentication) {
-
-        /*// 로그인 되어 있지 않다면 로그인 페이지로 리다이렉트
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return "redirect:/login";
-        }
-
-         */
+    public String create() {
         return "create";
     }
 
-
     // 입력 받은 데이터 글 저장 // 파일 불러 오기
     @PostMapping("/save")
-    @PreAuthorize("isAuthenticated()")
-    public String save(@ModelAttribute BoardDto boardDto,
-                       @RequestParam(required = false)MultipartFile[] files,
-                       Authentication authentication) throws IOException {
-        authentication.getPrincipal();
+    public String save(@AuthenticationPrincipal CustomUserDetails userDetails,
+                       @ModelAttribute BoardDto boardDto,
+                       @RequestParam (required=false) MultipartFile[] files) throws IOException {
+        if(userDetails == null) {
+            // 로그인하지 않은 사용자일 경우 에러 메시지와 함께 홈 화면으로 리디렉션
+            throw new Exception401("로그인이 필요합니다.");
+        }
+
         boardDto.setCreateTime(LocalDateTime.now());
-        boardService.save(boardDto, files, authentication);
+        User user = userDetails.getUser(); // userDetails에서 사용자 정보를 얻음
+        boardService.save(user, boardDto, files);
         return "redirect:/board/";
     }
 
@@ -81,10 +79,12 @@ public class BoardController {
 
     // 변경 된 게시글 데이터를 받아 와서 저장
     @PostMapping("update")
-    public String update(@ModelAttribute BoardDto boardDto,
+    public String update(@AuthenticationPrincipal CustomUserDetails userDetails,
+                         @ModelAttribute BoardDto boardDto,
                          @RequestParam(value = "newFiles", required = false) MultipartFile[] newFiles
-                         , Authentication authentication) throws IOException {
-        boardService.update(boardDto, newFiles , authentication);
+                         ) throws IOException {
+        User user = userDetails.getUser();
+        boardService.update(user, boardDto, newFiles);
         return "redirect:/board/";
     }
 

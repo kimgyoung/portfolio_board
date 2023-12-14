@@ -31,13 +31,14 @@
                      body: JSON.stringify(data)
                  });
                  const result = await response.json();
-                 if (response.ok) {
-                     const jwtToken = result.response; // JWT 토큰 값 추출
-                     // JWT 토큰을 로컬 스토리지에 저장
-                     localStorage.setItem('jwtToken', jwtToken);
+                if (response.ok) {
+                     const jwt = response.headers.get('Authorization');
+                     // JWT를 저장
+                     localStorage.setItem('jwt', jwt);
                      alert("로그인에 성공했습니다!");
                      window.location.href = '/';
                  } else {
+                     const result = await response.json();
                      alert("에러: " + result.error.message);
                  }
              } catch (error) {

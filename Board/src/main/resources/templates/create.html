@@ -70,19 +70,22 @@
 </form>
 
 <script>
+    window.onload = function() {
+        const jwt = localStorage.getItem('jwt');
+        if (!jwt) {
+            alert("로그인이 필요합니다!");
+            window.location.href = "/";
+        }
+    };
     document.addEventListener('DOMContentLoaded', function() {
         const boardForm = document.getElementById('boardForm');
-
         boardForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             const title = boardForm.elements.title.value;
             const writer = boardForm.elements.username.value;
             const contents = boardForm.elements.contents.value;
             const files = Array.from(boardForm.elements.file.files);
-
-            const jwtToken = localStorage.getItem('jwtToken'); // 로컬 스토리지에서 JWT 토큰을 가져옴
-
             const formData = new FormData();
             formData.append('title', title);
             formData.append('writer', writer);
@@ -94,29 +97,31 @@
                     formData.append('files', file);
                 });
             }
-
             try {
                 const response = await fetch('/board/save', {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${jwtToken}` // JWT 토큰을 헤더에 포함
+                        'Authorization': jwt  // 로컬 스토리지에서 불러온 JWT를 담음
                     },
-                    body: formData
+                    body: formData  // FormData 객체를 body에 설정
                 });
-
-                if (response.ok) {
+               if (response.ok) {
                     alert("글 작성이 완료 되었습니다!");
                     window.location.href = '/';
-                } else {
-                    const error = await response.json();
-                    alert("에러: " + error.message);
-                }
+               } else {
+                   if (response.status === 401) {
+                       alert("로그인이 필요합니다!");
+                       window.location.href = "/";
+                   } else {
+                       const error = await response.json();
+                       alert("에러: " + error.message);
+                   }
+               }
             } catch (error) {
                 console.error('에러:', error);
             }
         });
     });
-
     document.getElementById('add-file').addEventListener('click', function() {
         var fileInput = document.createElement('input');
         fileInput.type = 'file';
