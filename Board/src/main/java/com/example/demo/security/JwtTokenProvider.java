@@ -41,7 +41,6 @@ public class JwtTokenProvider {
                 .withClaim("id", user.getId()) // ** id 설정
                 .withClaim("roles", roles) // ** 권한 정보 설정
                 .sign(Algorithm.HMAC512(SECRET)); // ** jwt 생성 알고리즘 설정
-
         return TOKEN_PREFIX + jwt;
     }
 

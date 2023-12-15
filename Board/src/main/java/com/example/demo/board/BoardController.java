@@ -41,13 +41,9 @@ public class BoardController {
     public String save(@AuthenticationPrincipal CustomUserDetails userDetails,
                        @ModelAttribute BoardDto boardDto,
                        @RequestParam (required=false) MultipartFile[] files) throws IOException {
-        if(userDetails == null) {
-            // 로그인하지 않은 사용자일 경우 에러 메시지와 함께 홈 화면으로 리디렉션
-            throw new Exception401("로그인이 필요합니다.");
-        }
-
+        if(userDetails == null) {throw new Exception401("로그인이 필요합니다.");}
         boardDto.setCreateTime(LocalDateTime.now());
-        User user = userDetails.getUser(); // userDetails에서 사용자 정보를 얻음
+        User user = userDetails.getUser();
         boardService.save(user, boardDto, files);
         return "redirect:/board/";
     }
@@ -65,7 +61,6 @@ public class BoardController {
         model.addAttribute("boardList", boards);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-
         return "paging";
     }
 

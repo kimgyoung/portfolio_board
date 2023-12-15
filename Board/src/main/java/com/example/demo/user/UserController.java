@@ -25,7 +25,7 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody @Valid UserDto userDto){
         try {
             String jwt = userService.login(userDto);
-            return ResponseEntity.ok().header(JwtTokenProvider.HEADER, jwt).body(ApiUtils.success(null));
+            return ResponseEntity.ok().header("Authorization", "Bearer " + jwt).body(ApiUtils.success(null));
         } catch (Exception e) {
             throw new Exception401("인증 실패");
         }

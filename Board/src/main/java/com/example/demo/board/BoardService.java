@@ -45,7 +45,6 @@ public class BoardService {
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
-
         // 게시글 DB에 저장 후 pk를 받아 옴
         Long id = boardRepository.save(boardDto.toEntity(user)).getId();
         Board board = boardRepository.findById(id).get();

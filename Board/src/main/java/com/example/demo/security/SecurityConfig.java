@@ -86,9 +86,9 @@ public class SecurityConfig {
         http.authorizeRequests(
                 authorize -> {
                     try {
-                        authorize.antMatchers("/board/create","/carts/**","/options/**", "/orders/**").authenticated()
+                        authorize.antMatchers("/carts/**","/options/**", "/orders/**").authenticated()
                                 .antMatchers("/admin/**")
-                                .access("hasRole('ADMIN')")
+                                .hasAnyRole("ADMIN", "USER")
                                 .anyRequest().permitAll()
                                 .and()
                                 .exceptionHandling()

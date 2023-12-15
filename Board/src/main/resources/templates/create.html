@@ -70,13 +70,6 @@
 </form>
 
 <script>
-    window.onload = function() {
-        const jwt = localStorage.getItem('jwt');
-        if (!jwt) {
-            alert("로그인이 필요합니다!");
-            window.location.href = "/";
-        }
-    };
     document.addEventListener('DOMContentLoaded', function() {
         const boardForm = document.getElementById('boardForm');
         boardForm.addEventListener('submit', async function(e) {
@@ -98,10 +91,12 @@
                 });
             }
             try {
+                const jwt = localStorage.getItem('jwt');
+                console.log('Stored JWT:', localStorage.getItem('jwt'));
                 const response = await fetch('/board/save', {
                     method: 'POST',
                     headers: {
-                        'Authorization': jwt  // 로컬 스토리지에서 불러온 JWT를 담음
+                        'Authorization': 'Bearer ' + jwt
                     },
                     body: formData  // FormData 객체를 body에 설정
                 });
