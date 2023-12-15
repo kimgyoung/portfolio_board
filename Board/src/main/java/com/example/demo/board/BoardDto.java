@@ -1,7 +1,6 @@
 package com.example.demo.board;
 
 import com.example.demo.file.FileDto;
-import com.example.demo.user.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -15,7 +14,6 @@ import java.util.stream.Collectors;
 @ToString
 public class BoardDto {
 
-    // username -> User 클래스 생성? user id? nickname?
     private Long id;
     private String title;
     private String username;
@@ -24,18 +22,16 @@ public class BoardDto {
     private LocalDateTime updateTime;
     private Boolean fileExists;
     private List<FileDto> boardFiles;
-    private Long userId;
 
-    public Board toEntity(User user){
+    public Board toEntity(){
         return Board.builder()
                 .id(id)
                 .title(title)
                 .username(username)
                 .contents(contents)
                 .createTime(createTime)
-                .updateTime(LocalDateTime.now())
+                .updateTime(updateTime)
                 .fileExists(fileExists)
-                .user(user)
                 .build();
     }
 
@@ -43,7 +39,6 @@ public class BoardDto {
         List<FileDto> fileDtos = board.getBoardFiles().stream()
                 .map(FileDto::toFileDto)
                 .collect(Collectors.toList());
-        User user = board.getUser();
         return new BoardDto(
                 board.getId(),
                 board.getTitle(),
@@ -52,8 +47,7 @@ public class BoardDto {
                 board.getCreateTime(),
                 board.getUpdateTime(),
                 board.getFileExists(),
-                fileDtos,  // Add 'fileDtos' to constructor
-                user.getId()
+                fileDtos
         );
     }
 }

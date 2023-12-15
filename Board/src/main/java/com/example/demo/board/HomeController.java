@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.board;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,13 +11,4 @@ public class HomeController {
         return "home";  // home.html 파일을 반환
     }
 
-    @GetMapping("/join")
-    public String joinPage() {
-        return "join";  // join.html 파일을 반환
-    }
-
-    @GetMapping("/login")
-    public String loginPage() {
-        return "login";  // login.html 파일을 반환
-    }
 }

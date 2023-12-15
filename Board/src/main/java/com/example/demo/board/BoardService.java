@@ -3,14 +3,10 @@ package com.example.demo.board;
 import com.example.demo.file.FileDto;
 import com.example.demo.file.BoardFile;
 import com.example.demo.file.FileRepository;
-import com.example.demo.security.CustomUserDetails;
-import com.example.demo.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,15 +34,16 @@ public class BoardService {
 
     // 가져온 데이터 DB에 저장
     @Transactional
-    public void save(User user, BoardDto boardDto, MultipartFile[] files) throws IOException {
+    public void save(BoardDto boardDto, MultipartFile[] files) throws IOException {
         boardDto.setCreateTime(LocalDateTime.now());
         // 저장 경로
         Path uploadPath = Paths.get(filePath);
+        // 경로가 없다면 생성
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
         // 게시글 DB에 저장 후 pk를 받아 옴
-        Long id = boardRepository.save(boardDto.toEntity(user)).getId();
+        Long id = boardRepository.save(boardDto.toEntity()).getId();
         Board board = boardRepository.findById(id).get();
 
         // 파일 정보 저장
@@ -112,8 +109,7 @@ public class BoardService {
                     board.getCreateTime(),
                     board.getUpdateTime(),
                     board.getFileExists(),
-                    fileDtos,  // 'fileDtos'를 생성자에 추가
-                    board.getUser() != null ? board.getUser().getId() : null
+                    fileDtos  // 'fileDtos'를 생성자에 추가
             );
         });
     }
@@ -127,10 +123,11 @@ public class BoardService {
     }
 
     @Transactional
-    public void update(User user, BoardDto boardDto, MultipartFile[] newFiles) throws IOException {
+    public void update(BoardDto boardDto, MultipartFile[] newFiles) throws IOException {
         if(boardRepository.findById(boardDto.getId()).isPresent()){
             Optional<Board> boardOptional = boardRepository.findById(boardDto.getId());
             Board board = boardOptional.get();
+            boardDto.setUpdateTime(LocalDateTime.now());
 
             // 새로운 파일이 있다면 기존 파일을 삭제 하고 새 파일을 업로드
             if (newFiles != null && newFiles.length > 0 && !newFiles[0].isEmpty()) {
@@ -140,7 +137,7 @@ public class BoardService {
                     deleteFile(board.getId());  // 기존 파일 삭제
                 }
                 // 새로운 파일을 저장 하고 DB에 저장
-                save(user, boardDto, newFiles);
+                save(boardDto, newFiles);
             }
             // 게시글 정보를 업데이트 하고 DB에 저장
             board.updateFromDto(boardDto);

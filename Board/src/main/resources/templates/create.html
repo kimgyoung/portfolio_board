@@ -11,11 +11,9 @@
             margin: 0;
             padding: 20px;
         }
-
         h1 {
             color: #333;
         }
-
         form {
             max-width: 400px;
             margin: 0 auto;
@@ -24,7 +22,6 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
         input[type="text"],
         textarea,
         input[type="file"] {
@@ -35,7 +32,6 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-
         input[type="submit"] {
             background-color: #4caf50;
             color: white;
@@ -49,7 +45,6 @@
             cursor: pointer;
             border-radius: 5px;
         }
-
         input[type="submit"]:hover {
             background-color: #45a049;
         }
@@ -57,12 +52,13 @@
 </head>
 <body>
 <h1>글 작성</h1>
-<form id="boardForm" action="/board/save" method="post" enctype="multipart/form-data">
+<form action="/board/save" method="post" enctype="multipart/form-data">
     title: <input type="text" name="title"> <br>
     writer: <input type="text" name="username"> <br>
     contents: <textarea name="contents" cols="30" rows="10"></textarea> <br>
+    file: <input type="file" name="files" multiple> <br>
     <div id="file-inputs">
-        file: <input type="file" name="file" multiple class="new-file"> <br>
+        file: <input type="file" name="files" multiple class="new-file"> <br>
     </div>
     <button type="button" id="add-file">파일 추가</button>
     <div id="preview"></div>
@@ -70,53 +66,6 @@
 </form>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const boardForm = document.getElementById('boardForm');
-        boardForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const title = boardForm.elements.title.value;
-            const writer = boardForm.elements.username.value;
-            const contents = boardForm.elements.contents.value;
-            const files = Array.from(boardForm.elements.file.files);
-            const formData = new FormData();
-            formData.append('title', title);
-            formData.append('writer', writer);
-            formData.append('contents', contents);
-
-            // 파일이 추가 되었을 때만 반복문 실행
-            if (files && files.length > 0) {
-                files.forEach((file, index) => {
-                    formData.append('files', file);
-                });
-            }
-            try {
-                const jwt = localStorage.getItem('jwt');
-                console.log('Stored JWT:', localStorage.getItem('jwt'));
-                const response = await fetch('/board/save', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + jwt
-                    },
-                    body: formData  // FormData 객체를 body에 설정
-                });
-               if (response.ok) {
-                    alert("글 작성이 완료 되었습니다!");
-                    window.location.href = '/';
-               } else {
-                   if (response.status === 401) {
-                       alert("로그인이 필요합니다!");
-                       window.location.href = "/";
-                   } else {
-                       const error = await response.json();
-                       alert("에러: " + error.message);
-                   }
-               }
-            } catch (error) {
-                console.error('에러:', error);
-            }
-        });
-    });
     document.getElementById('add-file').addEventListener('click', function() {
         var fileInput = document.createElement('input');
         fileInput.type = 'file';
@@ -125,8 +74,10 @@
         fileInput.className = 'new-file';
 
         var br = document.createElement('br');
+
         document.getElementById('file-inputs').appendChild(br);
         document.getElementById('file-inputs').appendChild(fileInput);
+
         fileInput.addEventListener('change', function(e) {
             previewFiles(e, fileInput);
         });

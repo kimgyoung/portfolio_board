@@ -47,10 +47,4 @@ public class CommentDto {
         this.contents = contents;
     }
 
-/*
-    public LocalDateTime getCreateTime(LocalDateTime now) {
-        return now;
-    }
-
- */
 }

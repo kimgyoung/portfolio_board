@@ -107,19 +107,19 @@
     </tr>
     <tr>
         <th>제목</th>
-        <td th:text="${board.getTitle}"></td>
+        <td th:text="${board.Title}"></td>
     </tr>
     <tr>
         <th>작성자</th>
-        <td th:text="${board.getUsername}"></td>
+        <td th:text="${board.Username}"></td>
     </tr>
     <tr>
         <th>작성 시간</th>
-        <td th:text="${board.getCreateTime}"></td>
+        <td th:text="${board.CreateTime}"></td>
     </tr>
     <tr>
         <th>내용</th>
-        <td th:text="${board.getContents}"></td>
+        <td th:text="${board.Contents}"></td>
     </tr>
 </table>
 
@@ -152,7 +152,7 @@
             <th>내용</th>
             <th>작성 시간</th>
             <th>댓글 삭제</th>
-            <th>댓글 수정</th> <!-- 댓글 수정 컬럼 추가 -->
+            <th>댓글 수정</th>
         </tr>
         </thead>
         <tbody>
@@ -199,7 +199,6 @@
                 output += "</tr>";
                 // 작성한 댓글을 목록에 추가
                 document.querySelector('#comment-list table tbody').insertAdjacentHTML('beforeend', output);
-
                 // 사용자가 댓글을 작성을 마치면 입력 필드를 비워서 다음 댓글을 작성할 때 기존에 입력된 텍스트를 비움.
                 document.getElementById('writer').value = '';
                 document.getElementById('contents').value = '';
@@ -220,9 +219,8 @@
             url: "/file/delete/" + boardId,
             success: function (res) {
                 console.log("파일 삭제 성공", res);
-                // 파일 삭제 성공 시 로직 구현
-                alert('파일이 성공적으로 삭제되었습니다.'); // 알림 메시지 표시
-                $('#file-delete-btn').hide(); // 파일 삭제 버튼을 숨깁니다.
+                alert('파일이 성공적으로 삭제되었습니다.');
+                $('#file-delete-btn').hide(); // 파일 삭제 버튼을 숨김
             },
             error: function (err) {
                 console.log("파일 삭제 실패", err);

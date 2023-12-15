@@ -45,6 +45,6 @@ public class FileDownloadController {
     @GetMapping("file/delete/{boardId}")
     public String fileDelete(@PathVariable("boardId") Long boardId){
         boardService.deleteFile(boardId);
-        return "redirect:/"; // 파일 삭제 후 리다이렉트 할 경로
+        return "redirect:/";
     }
 }
