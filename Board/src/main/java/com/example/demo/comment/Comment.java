@@ -41,6 +41,5 @@ public class Comment {
 
     public void updateComment (CommentDto commentDto) {
         this.contents = commentDto.getContents();
-        //this.createTime =commentDto.getCreateTime(LocalDateTime.now()) ;
     }
 }

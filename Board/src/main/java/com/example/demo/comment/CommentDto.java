@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
-//* @ToString
 @Setter
 @Getter
 public class CommentDto {
@@ -42,9 +41,8 @@ public class CommentDto {
                 comment.getCreateTime()
         );
     }
-    // contents 필드만을 가진 생성자
+    // contents 필드만을 가진 생성자 (댓글 내용 업데이트를 위해 필요)
     public CommentDto(String contents) {
         this.contents = contents;
     }
-
 }

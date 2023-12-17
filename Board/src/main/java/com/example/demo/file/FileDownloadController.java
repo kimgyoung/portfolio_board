@@ -19,13 +19,16 @@ public class FileDownloadController {
 
     // "C:/Users/G/Desktop/portfolio_board/boardFile/";
     // "C:/Users/김가영/Desktop/portfolio_board/Board/boardFile/";
+
+    // 주어진 UUID와 파일명으로 파일을 찾아 반환
     @GetMapping("/download/{uuid}/{fileName}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String uuid, @PathVariable String fileName){
+        // 파일 경로
         Path filePath = Paths.get("C:/Users/G/Desktop/portfolio_board/boardFile/" + uuid + fileName);
-
         try {
+            // 파일 경로로 UrlResource 생성
             Resource resource = new UrlResource(filePath.toUri());
-
+            // 리소스가 존재하고 읽을 수 있다면, 해당 파일을 반환
             if(resource.exists() || resource.isReadable()){
                 return ResponseEntity.ok()
                         .header("Content-Disposition"
@@ -36,12 +39,12 @@ public class FileDownloadController {
             else {
                 return ResponseEntity.notFound().build();
             }
-
         }catch (Exception e){
             return ResponseEntity.internalServerError().build();
         }
     }
 
+    // 특정 게시글에 첨부 된 파일 삭제
     @GetMapping("file/delete/{boardId}")
     public String fileDelete(@PathVariable("boardId") Long boardId){
         boardService.deleteFile(boardId);
