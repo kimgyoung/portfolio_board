@@ -52,20 +52,18 @@
     <label for="contents">Contents:</label>
     <textarea name="contents" id="contents" cols="30" rows="10" th:text="${board.contents}"></textarea>
     <br>
-    <!-- Old Files Information -->
+
     <label oldFiles>Old Files:</label>
     <div th:each="file : ${board.boardFiles}">
         <p th:text="${file.fileName}"></p>
     </div>
     <br>
-    <!-- New Files Input -->
     <label>New Files:</label>
     <div id="file-inputs">
         <input type="file" name="newFiles" class="new-file"> <br>
     </div>
     <button type="button" id="add-file">파일 추가</button>
     <br>
-    <!-- New Files Preview -->
     <div id="preview"></div>
     <br>
     <input type="submit" value="글수정">

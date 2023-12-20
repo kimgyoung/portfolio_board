@@ -51,14 +51,12 @@
     </style>
 </head>
 <body>
-<h1>글 작성</h1>
 <form action="/board/save" method="post" enctype="multipart/form-data">
     title: <input type="text" name="title"> <br>
     writer: <input type="text" name="username"> <br>
     contents: <textarea name="contents" cols="30" rows="10"></textarea> <br>
-    file: <input type="file" name="files" multiple> <br>
     <div id="file-inputs">
-        file: <input type="file" name="files" multiple class="new-file"> <br>
+        file: <input type="file" name="files" multiple id="files"> <br>
     </div>
     <button type="button" id="add-file">파일 추가</button>
     <div id="preview"></div>
@@ -67,23 +65,21 @@
 
 <script>
     document.getElementById('add-file').addEventListener('click', function() {
-        var fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.name = 'files';
-        fileInput.multiple = true;
-        fileInput.className = 'new-file';
+        var fileInput = document.getElementById('files');
+        var clone = fileInput.cloneNode();
+        clone.value = "";
 
         var br = document.createElement('br');
 
         document.getElementById('file-inputs').appendChild(br);
-        document.getElementById('file-inputs').appendChild(fileInput);
+        document.getElementById('file-inputs').appendChild(clone);
 
-        fileInput.addEventListener('change', function(e) {
-            previewFiles(e, fileInput);
+        clone.addEventListener('change', function(e) {
+            previewFiles(e, clone);
         });
     });
 
-    var initialInput = document.querySelector('.new-file');
+    var initialInput = document.getElementById('files');
     initialInput.addEventListener('change', function(e) {
         previewFiles(e, initialInput);
     });

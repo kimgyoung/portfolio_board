@@ -26,6 +26,7 @@ public class Comment {
 
     private String writer;
 
+    @Column(nullable = false)
     private String contents;
 
     private LocalDateTime createTime;

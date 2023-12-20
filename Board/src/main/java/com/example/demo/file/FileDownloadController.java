@@ -45,7 +45,7 @@ public class FileDownloadController {
     }
 
     // 특정 게시글에 첨부 된 파일 삭제
-    @GetMapping("file/delete/{boardId}")
+    @GetMapping("/file/delete/{boardId}")
     public String fileDelete(@PathVariable("boardId") Long boardId){
         boardService.deleteFile(boardId);
         return "redirect:/";
