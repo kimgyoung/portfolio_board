@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>join</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 20px;
+            margin-top: 50px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px; /* 폰트 크기 조절 */
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            font-size: 14px; /* 입력란 폰트 크기 조절 */
+        }
+
+        #joinSubmitButton {
+            background-color: #28a745; /* 버튼 배경색 초록색으로 변경 */
+            color: #fff; /* 글자색 흰색으로 변경 */
+            border-color: #28a745; /* 테두리 색 초록색으로 변경 */
+        }
+
+        .error-message {
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h1>회원 가입</h1>
+
+    <form id="joinForm">
+        <div class="form-group">
+            <label for="nickname">Nickname:</label>
+            <input type="text" class="form-control" id="nickname" name="nickname" required>
+            <small class="form-text text-muted">닉네임을 입력해주세요.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+            <small class="form-text text-muted">이메일을 입력해주세요. (예: example@example.com)</small>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+            <small class="form-text text-muted">비밀번호는 8자 이상 20자 이내로 작성해야 하며, 영문, 숫자, 특수문자가 포함되어야 합니다.</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="joinSubmitButton">가입하기</button>
+    </form>
+    <div id="messageContainer"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        const passwordRegex = /^.*(?=.{8,20})(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%&*]).*$/;
+
+        const validateNickname = (nickname) => {
+            if (nickname.length < 2 || nickname.length > 10) {
+                showError("닉네임은 2자 이상 10자 이내로 작성 가능합니다.");
+                return false;
+            }
+            return true;
+        };
+
+        const validateEmail = (email) => {
+            if (email.length === 0) {
+                showError("이메일을 입력해주세요.");
+                return false;
+            } else if (!emailRegex.test(email)) {
+                showError("이메일 형식으로 작성해주세요.");
+                return false;
+            }
+            return true;
+        };
+
+        const validatePassword = (password) => {
+            if (password.length < 8 || password.length > 20) {
+                showError("비밀번호는 8자 이상 20자 이내로 작성 가능합니다.");
+                return false;
+            } else if (!passwordRegex.test(password)) {
+                showError("비밀번호는 영문, 숫자, 특수문자가 포함되어야 하고 공백이 포함될 수 없습니다.");
+                return false;
+            }
+            return true;
+        };
+
+        const showError = (message) => {
+            const messageContainer = document.getElementById('messageContainer');
+            messageContainer.innerHTML = `<p class="error-message">${message}</p>`;
+        };
+
+        const submitJoinForm = async (event) => {
+            event.preventDefault(); // 기본 폼 제출 동작 방지
+            const nickname = document.getElementById('nickname').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!validateNickname(nickname) || !validateEmail(email) || !validatePassword(password)) {
+                return;
+            }
+            const data = {
+                nickname,
+                email,
+                password,
+            };
+
+            try {
+                const response = await fetch('http://localhost:8080/join', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert("회원가입에 성공했습니다!");
+                    window.location.href = '/';
+                } else {
+                    alert("Error: " + result.error.message);
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        document.getElementById('joinSubmitButton').addEventListener('click', submitJoinForm);
+    });
+</script>
+</body>
+</html>

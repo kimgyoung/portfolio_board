@@ -41,18 +41,14 @@
 </head>
 <body>
 
-<form action="/board/update" method="post" enctype="multipart/form-data">
+<form id="board-update-form" action="/board/update" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" th:value="${board.id}">
     <label for="title">Title:</label>
     <input type="text" name="title" id="title" th:value="${board.title}">
     <br>
-    <label for="username">Writer:</label>
-    <input type="text" name="username" id="username" th:value="${board.username}">
-    <br>
     <label for="contents">Contents:</label>
     <textarea name="contents" id="contents" cols="30" rows="10" th:text="${board.contents}"></textarea>
     <br>
-
     <label oldFiles>Old Files:</label>
     <div th:each="file : ${board.boardFiles}">
         <p th:text="${file.fileName}"></p>
@@ -107,6 +103,30 @@
         });
         input.after(preview);
     }
+    document.getElementById('board-update-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const formData = new FormData(document.getElementById('board-update-form'));
+        const jwt = localStorage.getItem('jwt');
+
+        try {
+            const response = await fetch('/board/update', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + jwt
+                },
+                body: formData
+            });
+
+            if (response.ok) {
+                console.log("게시글 수정 성공");
+                window.location.href = '/board/'; // 리다이렉트
+            } else {
+                console.log("게시글 수정 실패");
+            }
+        } catch (err) {
+            console.log("에러 발생: ", err);
+        }
+    });
 </script>
 
 </body>

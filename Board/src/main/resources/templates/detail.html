@@ -111,7 +111,7 @@
     </tr>
     <tr>
         <th>작성자</th>
-        <td th:text="${board.Username}"></td>
+        <td th:text="${board.getNickName}"></td>
     </tr>
     <tr>
         <th>작성 시간</th>
@@ -182,6 +182,9 @@
             // 요청 방식: post, 요청 주소: /comment/save, 요청 데이터: 작성자, 작성 내용, 게시글 번호
             type: "post",
             url: "/comment/save",
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+            },
             data: {
                 "writer": jsWriter,
                 "contents": jsContents,
@@ -216,6 +219,9 @@
         $.ajax({
             type: "GET",
             url: "/file/delete/" + boardId,
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+            },
             success: function (res) {
                 console.log("파일 삭제 성공", res);
                 alert('파일이 성공적으로 삭제되었습니다.');
@@ -245,6 +251,9 @@
         $.ajax({
             type: "GET",
             url: "/comment/delete/" + commentId,
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+            },
             success: function (res) {
                 console.log("댓글 삭제 성공", res);
                 // 삭제한 댓글을 화면에서도 제거 // 처음 태그 부터
@@ -282,6 +291,9 @@
                 data: {
                     "id": commentId,
                     "contents": editCommentValue
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
                 },
                 success: function (res) {
                     console.log("댓글 수정 성공", res);
@@ -343,7 +355,22 @@
     const deleteReq = () => {
         console.log("삭제 요청");
         const id = [[${board.id}]];
-        location.href = "/board/delete/" + id;
+        const token = localStorage.getItem('jwt');  // 로컬 스토리지에서 JWT 토큰 가져오기
+
+        $.ajax({
+            type: "GET",
+            url: "/board/delete/" + id,
+            headers: {
+                'Authorization': 'Bearer ' + token   // JWT 토큰을 인증 헤더에 포함시키기
+            },
+            success: function (res) {
+                console.log("게시글 삭제 성공", res);
+                location.href = "/";  // 삭제 성공 후 홈으로 이동
+            },
+            error: function (err) {
+                console.log("게시글 삭제 실패", err);
+            }
+        });
     }
 </script>
 </html>

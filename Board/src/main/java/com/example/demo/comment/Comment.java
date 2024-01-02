@@ -2,6 +2,7 @@ package com.example.demo.comment;
 
 import com.example.demo.board.Board;
 import com.example.demo.comment.CommentDto;
+import com.example.demo.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,10 @@ public class Comment {
     @JoinColumn(name = "board_id")
     private Board board;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     private String writer;
 
     @Column(nullable = false)
@@ -32,12 +37,13 @@ public class Comment {
     private LocalDateTime createTime;
 
     @Builder
-    public Comment(Long id, String writer, String contents, Board board, LocalDateTime createTime){
+    public Comment(Long id, String writer, String contents, Board board, LocalDateTime createTime, User user){
         this.id = id;
         this.writer = writer;
         this.contents = contents;
         this.board = board;
         this.createTime = createTime;
+        this.user = user;
     }
 
     public void updateComment (CommentDto commentDto) {

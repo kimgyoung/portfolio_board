@@ -1,4 +1,4 @@
-# Board v1.7.2
+# Board v2.7.2
 
 ## 개발환경
 IDE: IntelliJ IDEA Community  
@@ -83,8 +83,8 @@ aplication.yml
 </div>
 
 ## 향후 업데이트 예정 기능
-1. 다중 파일 첨부 기능
-2. 로그인 User -> 게시판 연동
+1. 토큰 만료시 새 토큰 발급
+2.
 
 #### v1.0.0 (2023.11.21)
 1. [추가] 게시판 생성(/board/save)
@@ -122,3 +122,9 @@ aplication.yml
 2. [수정] detail 작성자 <-> 내용 바뀌어서 출력
 3. [추가] title, contents 필드 nullable = false
 4. [추가] 파일 다운로드 버튼, 파일 프리뷰
+
+---
+## 로그인
+### v2.7.2 (2023.12.26)
+1. 로그인 기능 추가
+2. 게시판, 댓글 CRUD 연동

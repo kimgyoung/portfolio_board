@@ -10,5 +10,14 @@ public class HomeController {
     public String home() {
         return "home";  // home.html 파일을 반환
     }
+    @GetMapping("/join")
+    public String joinPage() {
+        return "join";  // join.html 파일을 반환
+    }
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";  // login.html 파일을 반환
+    }
 
 }

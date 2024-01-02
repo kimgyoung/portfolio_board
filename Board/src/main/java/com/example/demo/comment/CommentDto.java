@@ -1,6 +1,7 @@
 package com.example.demo.comment;
 
 import com.example.demo.board.Board;
+import com.example.demo.user.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -21,13 +22,16 @@ public class CommentDto {
 
     private LocalDateTime createTime;
 
-    public Comment toEntity(Board board){
+    private Long UserId;
+
+    public Comment toEntity(Board board, User user){
         return Comment.builder()
                 .id(id)
                 .writer(writer)
                 .contents(contents)
                 .board(board)
                 .createTime(LocalDateTime.now())
+                .user(user)
                 .build();
     }
 
@@ -38,7 +42,8 @@ public class CommentDto {
                 comment.getWriter(),
                 comment.getContents(),
                 comment.getBoard().getId(),
-                comment.getCreateTime()
+                comment.getCreateTime(),
+                comment.getUser().getId()
         );
     }
     // contents 필드만을 가진 생성자 (댓글 내용 업데이트를 위해 필요)

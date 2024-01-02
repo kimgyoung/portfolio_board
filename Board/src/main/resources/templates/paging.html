@@ -106,7 +106,7 @@
     <tr th:each="board: ${boardList}">
         <td th:text="${board.getId()}"></td>
         <td><a th:href="@{${board.getId}|(page = ${boardList.number + 1})}" th:text="${board.getTitle()}"></a></td>
-        <td th:text="${board.getUsername()}"></td>
+        <td th:text="${board.getNickName()}"></td>
         <td th:text="*{#temporals.format(board.getCreateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
     </tr>
 </table>

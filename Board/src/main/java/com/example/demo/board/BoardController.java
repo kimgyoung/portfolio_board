@@ -1,11 +1,15 @@
 package com.example.demo.board;
 
+import com.example.demo.error.exception.Exception401;
 import com.example.demo.file.BoardFile;
 import com.example.demo.file.FileRepository;
+import com.example.demo.security.CustomUserDetails;
+import com.example.demo.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,11 +36,15 @@ public class BoardController {
     // BoardDto: 게시글 데이터를 담은 DTO 객체
     // 파일 불러 오기 (required=false) : 파일이 없을 때도 요청을 처리
     @PostMapping("/save")
-    public String save(@ModelAttribute BoardDto boardDto,
+    public String save(@AuthenticationPrincipal CustomUserDetails userDetails,
+                       @ModelAttribute BoardDto boardDto,
                        @RequestParam (required=false) MultipartFile[] files) throws IOException {
-        boardService.save(boardDto, files);
+        if(userDetails == null) {throw new Exception401("로그인이 필요합니다.");}
+        User user = userDetails.getUser();
+        boardService.save(user, boardDto, files);
         return "redirect:/board/";
     }
+
 
     // 게시글 목록 페이지
     // 페이징 정보를 담은 Pageable 객체 // 뷰에 전달할 데이터를 담은 Model 객체
@@ -65,9 +73,12 @@ public class BoardController {
 
     // 변경 된 게시글 데이터를 받아 와서 저장
     @PostMapping("update")
-    public String update(@ModelAttribute BoardDto boardDto,
-                         @RequestParam(value = "newFiles", required = false) MultipartFile[] newFiles) throws IOException {
-        boardService.update(boardDto, newFiles);
+    public String update(@AuthenticationPrincipal CustomUserDetails userDetails,
+                         @ModelAttribute BoardDto boardDto,
+                         @RequestParam(value = "newFiles", required = false) MultipartFile[] newFiles
+    ) throws IOException {
+        User user = userDetails.getUser();
+        boardService.update(user, boardDto, newFiles);
         return "redirect:/board/";
     }
 
@@ -87,8 +98,10 @@ public class BoardController {
 
     // 게시글 삭제
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id){
-        boardService.delete(id);
+    public String delete(@PathVariable Long id,
+                         @AuthenticationPrincipal CustomUserDetails userDetails){
+        Long userId = userDetails.getUser().getId();
+        boardService.delete(id,userId);
         return "home";
     }
 
