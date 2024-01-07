@@ -37,7 +37,7 @@ aplication.yml
 \- 게시글 저장  
 \- 파일(이미지) 첨부
 <div class="board_create_image">
-<img src="./image/board_create.PNG">
+<img src="./image/board_create.png">
 </div>
 
 
