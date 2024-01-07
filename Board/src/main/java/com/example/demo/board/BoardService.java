@@ -32,8 +32,8 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final FileRepository fileRepository;
     private final UserRepository userRepository;
-    private final String filePath = "C:/Users/G/Desktop/portfolio_board/boardFile/";
-    //private final String filePath = "C:/Users/김가영/Desktop/portfolio_board/Board/boardFile/";
+    //private final String filePath = "C:/Users/G/Desktop/portfolio_board/boardFile/";
+    private final String filePath = "C:/Users/김가영/Desktop/portfolio_board/Board/boardFile/";
 
     // 가져온 데이터 DB에 저장
     @Transactional

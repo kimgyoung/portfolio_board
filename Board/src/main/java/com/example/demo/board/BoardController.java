@@ -29,7 +29,7 @@ public class BoardController {
 
     @GetMapping("/create")
     public String create() {
-        return "create";
+        return "create"; // create.html 이동
     }
 
     // 입력 받은 데이터, 글 저장
@@ -56,7 +56,7 @@ public class BoardController {
         int startPage = (int)Math.ceil((double)pageable.getPageNumber() / blockLimit - 1) * blockLimit + 1; // 1
         int endPage = (startPage+ blockLimit - 1) < boards.getTotalPages() ? (startPage + blockLimit -1) : boards.getTotalPages(); // 3
 
-        // 뷰에 전달
+        // 뷰에 데이터 전달
         model.addAttribute("boardList", boards);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
@@ -83,17 +83,20 @@ public class BoardController {
     }
 
     // 특정 게시글의 상세 정보를 보여주는 페이지로 이동
-    @GetMapping("/{id}")
+    @GetMapping("/{id}") // URL에서 게시글의 ID를 가져와 저장     // 페이징 정보를 담고 있는 객체, 기본 페이지 번호를 1로 설정
     public String paging(@PathVariable Long id, Model model, @PageableDefault(page = 1) Pageable pageable){
+        // 해당 ID의 게시글 정보를 BoardDto 객체에 저장
         BoardDto boardDto = boardService.findById(id);
 
-        model.addAttribute("board", boardDto);
-        model.addAttribute("page", pageable.getPageNumber());
+        // 뷰에 데이터 전달
+        model.addAttribute("board", boardDto); // boardDto -> board(view)
+        model.addAttribute("page", pageable.getPageNumber()); // 현재 페이지 번호 -> page(view)
 
+        // 해당 ID의 게시글에 첨부된 파일 정보를 가져와 List<BoardFile> 객체에 저장
         List<BoardFile> byBoardFiles = fileRepository.findByBoardId(id);
-        model.addAttribute("files",byBoardFiles);
+        model.addAttribute("files",byBoardFiles); // byBoardFiles -> files(view)
 
-        return "detail";
+        return "detail"; // detail 뷰 반환
     }
 
     // 게시글 삭제

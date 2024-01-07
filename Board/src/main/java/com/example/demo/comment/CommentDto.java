@@ -14,7 +14,7 @@ public class CommentDto {
 
     private Long id;
 
-    private String writer;
+    private String nickName; // -> 작성자 로 바꾸기
 
     private String contents;
 
@@ -27,7 +27,7 @@ public class CommentDto {
     public Comment toEntity(Board board, User user){
         return Comment.builder()
                 .id(id)
-                .writer(writer)
+                .nickName(user.getNickname())
                 .contents(contents)
                 .board(board)
                 .createTime(LocalDateTime.now())
@@ -39,7 +39,7 @@ public class CommentDto {
     public static CommentDto fromEntity(Comment comment){
         return new CommentDto(
                 comment.getId(),
-                comment.getWriter(),
+                comment.getNickName(),
                 comment.getContents(),
                 comment.getBoard().getId(),
                 comment.getCreateTime(),

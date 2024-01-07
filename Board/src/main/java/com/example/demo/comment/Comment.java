@@ -29,7 +29,7 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String writer;
+    private String nickName;
 
     @Column(nullable = false)
     private String contents;
@@ -37,9 +37,9 @@ public class Comment {
     private LocalDateTime createTime;
 
     @Builder
-    public Comment(Long id, String writer, String contents, Board board, LocalDateTime createTime, User user){
+    public Comment(Long id, String nickName, String contents, Board board, LocalDateTime createTime, User user){
         this.id = id;
-        this.writer = writer;
+        this.nickName = nickName;
         this.contents = contents;
         this.board = board;
         this.createTime = createTime;
