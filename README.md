@@ -17,6 +17,21 @@ aplication.yml
 <img src="./image/home.png">
 </div>
 
+### 회원가입
+<div class="home_image">
+<img src="./image/join.png">
+</div>
+
+### 로그인
+<div class="home_image">
+<img src="./image/login.png">
+</div>
+
+### 로그아웃
+<div class="home_image">
+<img src="./image/logout.png">
+</div>
+
 ### 게시글
 1. 게시글 작성(/board/save, /create)  
 \- 게시글 저장  
