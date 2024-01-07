@@ -19,17 +19,17 @@ aplication.yml
 
 ### 회원가입
 <div class="join_image">
-<img src="./image/join.png">
+<img src="./image/join.PNG">
 </div>
 
 ### 로그인
 <div class="login_image">
-<img src="./image/login.png">
+<img src="./image/login.PNG">
 </div>
 
 ### 로그아웃
 <div class="logout_image">
-<img src="./image/logout.png">
+<img src="./image/logout.PNG">
 </div>
 
 ### 게시글
@@ -37,7 +37,7 @@ aplication.yml
 \- 게시글 저장  
 \- 파일(이미지) 첨부
 <div class="board_create_image">
-<img src="./image/board_create.png">
+<img src="./image/board_create.PNG">
 </div>
 
 
