@@ -18,17 +18,17 @@ aplication.yml
 </div>
 
 ### 회원가입
-<div class="home_image">
+<div class="join_image">
 <img src="./image/join.png">
 </div>
 
 ### 로그인
-<div class="home_image">
+<div class="login_image">
 <img src="./image/login.png">
 </div>
 
 ### 로그아웃
-<div class="home_image">
+<div class="logout_image">
 <img src="./image/logout.png">
 </div>
 
