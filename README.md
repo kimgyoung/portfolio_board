@@ -7,12 +7,22 @@ JDK 11
 mysql 8.0.35  
 Lombok  
 Spring Data JPA
-Spring Web  
-Spring Security   
+Spring Web    
 Thymeleaf  
 aplication.yml
 
-## 보안 조치
+## 기술 스택
+JAVA
+JavaScript
+HTML 5
+mysql
+
+## 기타 도구 및 라이브러리
+Spring Security
+Spring Validatoin
+Apache Commons Lang
+AuthO, Java JWT
+Gradle
 
 ## ERD
 <div class="ERD_image">
