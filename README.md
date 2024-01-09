@@ -24,12 +24,16 @@ Apache Commons Lang
 AuthO, Java JWT  
 Gradle  
 
-### 시스템 아키텍처 다이어그램
+---
+
+## 시스템 아키텍처 다이어그램
 <div class="D_image">
 <img src="./image/system_architecture_diagram.png">
 </div>
 
-### ERD
+---
+
+## ERD
 <div class="ERD_image">
 <img src="./image/ERD.png">
 </div>
