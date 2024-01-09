@@ -7,7 +7,7 @@ JDK 11
 mysql 8.0.35  
 Lombok  
 Spring Data JPA
-Spring Web
+Spring Web  
 Spring Security   
 Thymeleaf  
 aplication.yml
@@ -106,7 +106,7 @@ aplication.yml
 ## 로그인
 #### v2.7.2 (2023.12.26)
 1. 로그인 기능 추가
-2. 게시판, 댓글 CRUD 연동
+2. 유저인증 및 게시판, 댓글 CRUD 연동
 
 ---
 
