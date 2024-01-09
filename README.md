@@ -12,17 +12,22 @@ Thymeleaf
 aplication.yml
 
 ## 기술 스택
-JAVA
-JavaScript
-HTML 5
-mysql
+JAVA  
+JavaScript  
+HTML 5  
+mysql  
 
 ## 기타 도구 및 라이브러리
-Spring Security
-Spring Validatoin
-Apache Commons Lang
-AuthO, Java JWT
-Gradle
+Spring Security  
+Spring Validatoin  
+Apache Commons Lang  
+AuthO, Java JWT  
+Gradle  
+
+## 시스템 아키텍처 다이어그램
+<div class="D_image">
+<img src="./image/system_architecture_diagram.png">
+</div>
 
 ## ERD
 <div class="ERD_image">
