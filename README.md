@@ -12,6 +12,13 @@ Spring Security
 Thymeleaf  
 aplication.yml
 
+## 보안 조치
+
+## ERD
+<div class="ERD_image">
+<img src="./image/ERD.png">
+</div>
+
 ## 게시판 주요 기능
 <div class="home_image">
 <img src="./image/home.png">
